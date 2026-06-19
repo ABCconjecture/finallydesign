@@ -230,14 +230,6 @@ java -jar target/bysj-design-1.0.0.jar
 
 测试和启动依赖本地 MySQL 数据库。若数据库中已有数据，启动初始化逻辑会跳过已存在的数据导入。
 
-## GitHub 上传建议
-
-- 本地建议从 `--master` 目录作为仓库根目录上传，不要把外层超大 SQL 备份文件一并提交。
-- 不要提交 `target/`、`out/`、`.idea/`、`.vscode/` 等构建产物和 IDE 文件。
-- 不要在公开仓库中提交真实数据库密码、真实生产账号或真实学生隐私数据。
-- 公开前请重点检查 `src/main/resources/application.properties` 中的数据库默认密码和初始管理员默认密码，建议改为环境变量或示例占位值。
-- 当前 `src/main/resources/data/` 是项目运行所需示例数据；若替换为真实数据，上传前应脱敏。
-- 如需保存完整数据库备份，建议使用 GitHub Releases、对象存储或 Git LFS，不建议直接提交大型 `.sql` 文件。
 
 ## 项目边界
 
