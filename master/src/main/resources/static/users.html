@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户列表 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">首页</a></li>
+        <li><a href="analysis.html">多维分析</a></li>
+        <li><a href="users.html" class="active">用户列表</a></li>
+        <li><a href="warning.html">预警管理</a></li>
+        <li><a href="profile.html">用户画像</a></li>
+        <li><a href="tasks.html">任务状态</a></li>
+        <li><a href="account.html">后台账号</a></li>
+    </ul>
+</div>
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">User Directory Workspace</div>
+                <h1>用户列表与重点对象筛选</h1>
+                <p>
+                    支持按学号、姓名、学院、专业、所属群体和风险状态组合筛选，健康度统一保留 7 位小数，
+                    并对低健康用户进行分层提醒，方便辅导员和管理员快速定位重点对象。
+                </p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="analysis.html">查看多维分析</a>
+                <a class="btn btn-warning" href="warning.html">查看预警记录</a>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">用户搜索与筛选</div>
+        <div class="card-body">
+            <div class="page-filter-grid">
+                <input type="text" id="searchInput" placeholder="输入学号、姓名或用户 ID">
+                <input type="text" id="collegeInput" placeholder="按学院筛选">
+                <input type="text" id="majorInput" placeholder="按专业筛选">
+                <select id="clusterInput">
+                    <option value="">全部群体</option>
+                </select>
+                <select id="statusInput">
+                    <option value="">全部状态</option>
+                    <option value="状态稳定">状态稳定</option>
+                    <option value="轻度波动">轻度波动</option>
+                    <option value="持续关注">持续关注</option>
+                    <option value="重点预警">重点预警</option>
+                </select>
+                <button class="btn btn-primary" onclick="searchUsers()">搜索</button>
+            </div>
+            <p id="usersFilterHint" class="metric-trend mt-20">支持回车搜索与组合筛选，健康度按红 / 橙 / 绿三级颜色统一展示。</p>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">用户列表</div>
+        <div class="card-body">
+            <div id="usersSummary" class="page-filter-banner">正在加载用户列表...</div>
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>学号 / 姓名</th>
+                        <th>学院 / 专业</th>
+                        <th>所在群体</th>
+                        <th>健康度</th>
+                        <th>风险分</th>
+                        <th>状态</th>
+                        <th>预警数</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                    <tr><td colspan="8" class="table-loading-cell"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="usersPrevButton" class="btn btn-primary btn-small" onclick="prev()">上一页</button>
+                <span id="pageInfo" class="table-pager-info">第 1 页 / 共 1 页，合计 0 条</span>
+                <button id="usersNextButton" class="btn btn-primary btn-small" onclick="next()">下一页</button>
+                <div class="page-jump-group">
+                    <input type="number" id="jumpPageInput" min="1" placeholder="页码" class="page-jump-input">
+                    <button class="btn btn-info btn-small" onclick="jumpToPage()">跳转</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 用户列表</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/users.js"></script>
+</body>
+</html>

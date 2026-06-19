@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ç¨æ·åè¡¨ - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">é¦é¡µ</a></li>
+        <li><a href="analysis.html">å¤ç»´åæ</a></li>
+        <li><a href="users.html" class="active">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html">åå°è´¦å·</a></li>
+    </ul>
+</div>
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">User Directory Workspace</div>
+                <h1>ç¨æ·åè¡¨ä¸éç¹å¯¹è±¡ç­é</h1>
+                <p>
+                    æ¯ææå­¦å·ãå§åãå­¦é¢ãä¸ä¸ãæå±ç¾¤ä½åé£é©ç¶æç»åç­éï¼å¥åº·åº¦ç»ä¸ä¿ç 7 ä½å°æ°ï¼
+                    å¹¶å¯¹ä½å¥åº·ç¨æ·è¿è¡åå±æéï¼æ¹ä¾¿è¾å¯¼ååç®¡çåå¿«éå®ä½éç¹å¯¹è±¡ã
+                </p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="analysis.html">æ¥çå¤ç»´åæ</a>
+                <a class="btn btn-warning" href="warning.html">æ¥çé¢è­¦è®°å½</a>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">ç¨æ·æç´¢ä¸ç­é</div>
+        <div class="card-body">
+            <div class="page-filter-grid">
+                <input type="text" id="searchInput" placeholder="è¾å¥å­¦å·ãå§åæç¨æ· ID">
+                <input type="text" id="collegeInput" placeholder="æå­¦é¢ç­é">
+                <input type="text" id="majorInput" placeholder="æä¸ä¸ç­é">
+                <select id="clusterInput">
+                    <option value="">å¨é¨ç¾¤ä½</option>
+                </select>
+                <select id="statusInput">
+                    <option value="">å¨é¨ç¶æ</option>
+                    <option value="ç¶æç¨³å®">ç¶æç¨³å®</option>
+                    <option value="è½»åº¦æ³¢å¨">è½»åº¦æ³¢å¨</option>
+                    <option value="æç»­å³æ³¨">æç»­å³æ³¨</option>
+                    <option value="éç¹é¢è­¦">éç¹é¢è­¦</option>
+                </select>
+                <button class="btn btn-primary" onclick="searchUsers()">æç´¢</button>
+            </div>
+            <p id="usersFilterHint" class="metric-trend mt-20">æ¯æåè½¦æç´¢ä¸ç»åç­éï¼å¥åº·åº¦æçº¢ / æ© / ç»¿ä¸çº§é¢è²ç»ä¸å±ç¤ºã</p>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">ç¨æ·åè¡¨</div>
+        <div class="card-body">
+            <div id="usersSummary" class="page-filter-banner">æ­£å¨å è½½ç¨æ·åè¡¨...</div>
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>å­¦å· / å§å</th>
+                        <th>å­¦é¢ / ä¸ä¸</th>
+                        <th>æå¨ç¾¤ä½</th>
+                        <th>å¥åº·åº¦</th>
+                        <th>é£é©å</th>
+                        <th>ç¶æ</th>
+                        <th>é¢è­¦æ°</th>
+                        <th>æä½</th>
+                    </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                    <tr><td colspan="8" class="table-loading-cell"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="usersPrevButton" class="btn btn-primary btn-small" onclick="prev()">ä¸ä¸é¡µ</button>
+                <span id="pageInfo" class="table-pager-info">ç¬¬ 1 é¡µ / å± 1 é¡µï¼åè®¡ 0 æ¡</span>
+                <button id="usersNextButton" class="btn btn-primary btn-small" onclick="next()">ä¸ä¸é¡µ</button>
+                <div class="page-jump-group">
+                    <input type="number" id="jumpPageInput" min="1" placeholder="é¡µç " class="page-jump-input">
+                    <button class="btn btn-info btn-small" onclick="jumpToPage()">è·³è½¬</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - ç¨æ·åè¡¨</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/users.js"></script>
+</body>
+</html>
+

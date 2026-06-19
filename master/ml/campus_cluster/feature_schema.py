@@ -1,0 +1,21 @@
+FEATURE_ORDER = [
+    "avgOnlineHours",
+    "studyTrafficRatio",
+    "libraryAccessCount",
+    "borrowCount",
+    "networkActivityCount",
+    "classroomAccessCount",
+    "lateReturnCount",
+    "activeDays",
+    "avgAccessFrequency",
+    "avgBorrowDays",
+    "unreturnedCount",
+    "networkRisk",
+    "accessRisk",
+    "borrowRisk",
+    "abnormalTrafficFlag",
+    "absenteeFlag",
+    "riskScore",
+    "healthScore",
+]
+

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务状态 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">首页</a></li>
+        <li><a href="analysis.html">多维分析</a></li>
+        <li><a href="users.html">用户列表</a></li>
+        <li><a href="warning.html">预警管理</a></li>
+        <li><a href="profile.html">用户画像</a></li>
+        <li><a href="tasks.html" class="active">任务状态</a></li>
+        <li><a href="account.html">后台账号</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Operational Control Center</div>
+                <h1>任务状态与调度运维</h1>
+                <p>集中查看 Quartz 调度器状态、集群节点心跳、任务执行摘要、失败重试与操作审计，适合作为系统运行维护与答辩演示的运维总览页。</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="dashboard.html">返回首页看板</a>
+                <a class="btn btn-success" href="warning.html">查看预警管理</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info" id="taskActionMessage">
+        任务看板会展示 Quartz 调度器状态、集群节点心跳，并支持失败重试、冷却限制提示、分页日志、操作审计按类型/结果/操作人/时间范围筛选导出，以及详情一键复制。
+    </div>
+
+    <div class="card">
+        <div class="card-header">调度器概览</div>
+        <div class="card-body">
+            <div class="analysis-grid" id="schedulerSummary">
+                <div class="metric-card info">
+                    <div class="metric-label">调度器</div>
+                    <div class="metric-value">加载中</div>
+                    <div class="metric-trend">正在读取调度器元数据...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">集群节点心跳</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table cluster-node-table">
+                    <thead>
+                    <tr>
+                        <th>节点实例</th>
+                        <th>最近心跳</th>
+                        <th>检查间隔</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                    <tbody id="clusterNodeTable">
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-light);">正在加载集群节点信息...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">任务执行明细</div>
+        <div class="card-body">
+            <div class="task-toolbar">
+                <div class="task-toolbar-note" id="taskToolbarNote">管理员可在此手动执行、失败重试、暂停或恢复任务；失败重试会记录审批备注和重试原因，日志与审计会按页加载，并支持今天、近7天、近30天及自定义最近 N 小时快捷筛选，审批备注在表格中默认截断、悬浮可查看全文。</div>
+                <button type="button" class="btn btn-primary btn-small" id="refreshTaskStatusButton">刷新状态</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>任务</th>
+                        <th>Cron</th>
+                        <th>触发器状态</th>
+                        <th>最近结果</th>
+                        <th>处理数量</th>
+                        <th>上次完成</th>
+                        <th>下次执行</th>
+                        <th>摘要</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="taskStatusTable">
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 30px;">
+                            <div class="spinner"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 任务状态看板</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/tasks.js"></script>
+</body>
+</html>

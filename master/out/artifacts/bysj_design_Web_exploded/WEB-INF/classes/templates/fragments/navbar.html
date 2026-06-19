@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="daohang" th:fragment="navbar">
+    <ul>
+        <!-- Logo 已移除 -->
+        <li><a href="/campus/dashboard" th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">首页</a></li>
+        <li><a href="/campus/users" th:classappend="${currentPage == 'users'} ? 'active' : ''">用户列表</a></li>
+        <li><a href="/campus/warning" th:classappend="${currentPage == 'warning'} ? 'active' : ''">预警管理</a></li>
+    </ul>
+</div>
+</body>
+</html>

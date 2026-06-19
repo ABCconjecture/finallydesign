@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>预警管理</title>
+    <link href="/css/campus.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar(currentPage='warning')}"></div>
+
+<!-- 原背景图已移除 -->
+<div class="main-concent">
+    <div class="card">
+        <div class="card-header">未处理预警列表</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>类型</th>
+                    <th>内容</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="warningTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网行为分析系统 - 数据驱动管理</p>
+</div>
+
+<script>
+    $(function() {
+        function loadWarnings() {
+            $.get("/api/campus/warning/unhandled", function(data) {
+                var html = '';
+                data.forEach(w => {
+                    html += `<tr>
+                            <td>${w.userId}</td>
+                            <td>${w.type}</td>
+                            <td>${w.content}</td>
+                            <td>${new Date(w.createTime).toLocaleString()}</td>
+                            <td><button class="btn-primary btn-sm" onclick="handleWarning(${w.warningId})">标记处理</button></td>
+                        </tr>`;
+                });
+                $("#warningTableBody").html(html);
+            });
+        }
+        loadWarnings();
+
+        window.handleWarning = function(id) {
+            if (confirm('确认标记为已处理？')) {
+                $.post("/api/campus/warning/handle/" + id, function() {
+                    loadWarnings();
+                });
+            }
+        };
+    });
+</script>
+</body>
+</html>

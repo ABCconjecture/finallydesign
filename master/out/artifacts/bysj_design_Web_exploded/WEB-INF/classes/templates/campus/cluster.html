@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>簇详情</title>
+    <link href="/css/campus.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar(currentPage='users')}"></div>
+
+<!-- 原背景图已移除 -->
+<div class="main-concent">
+    <div class="card">
+        <div class="card-header">簇 <span th:text="${clusterId}"></span> 的学生列表</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>学院</th>
+                    <th>画像标签</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网行为分析系统 - 数据驱动管理</p>
+</div>
+
+<script>
+    $(function() {
+        var clusterId = [[${clusterId}]];
+        $.get("/api/campus/cluster/" + clusterId + "/users", function(data) {
+            var html = '';
+            data.forEach(user => {
+                html += `<tr>
+                        <td>${user.studentId}</td>
+                        <td>${user.name}</td>
+                        <td>${user.college}</td>
+                        <td>${user.tags}</td>
+                        <td><a href="/campus/profile/${user.userId}" class="btn-primary btn-sm">查看画像</a></td>
+                    </tr>`;
+            });
+            $("#userTableBody").html(html);
+        });
+    });
+</script>
+</body>
+</html>

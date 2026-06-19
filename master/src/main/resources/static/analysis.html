@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多维度分析 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">首页</a></li>
+        <li><a class="active" href="analysis.html">多维度分析</a></li>
+        <li><a href="users.html">用户列表</a></li>
+        <li><a href="warning.html">预警管理</a></li>
+        <li><a href="profile.html">用户画像</a></li>
+        <li><a href="tasks.html">任务状态</a></li>
+        <li><a href="account.html">后台账号</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">User Intelligence Workspace</div>
+                <h1>单用户多维度分析</h1>
+                <p>支持按学号、姓名或用户 ID 搜索用户，联动展示健康度、画像归属、雷达画像、四维拆解、群体对比、历史分析与开放预警。</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="users.html">返回用户列表</a>
+                <a class="btn btn-success" href="profile.html">查看聚类画像</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">用户搜索</div>
+        <div class="card-body">
+            <div class="page-filter-grid">
+                <input id="searchInput" type="text" placeholder="输入学号、姓名或用户 ID 搜索">
+                <button id="searchButton" class="btn btn-primary">查询用户</button>
+                <button id="resetButton" class="btn btn-warning">清空结果</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="analysisEmptyState" class="card mt-30">
+        <div class="card-body table-empty-cell">请输入学号或姓名后查看对应用户的多维分析结果。</div>
+    </div>
+
+    <div id="analysisContent" style="display:none;">
+        <div id="analysisHealthAlert" class="alert alert-warning" style="display:none;"></div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">用户概要</div>
+                <div class="card-body">
+                    <div id="userBasicInfo" class="detail-list"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">画像雷达图</div>
+                <div class="card-body">
+                    <div id="userRadarChart" class="chart-panel chart-panel-medium"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-30">
+            <div class="card-header">核心指标</div>
+            <div class="card-body">
+                <div id="userMetrics" class="analysis-grid grid-4"></div>
+            </div>
+        </div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">较上一分析周期变化</div>
+                <div class="card-body">
+                    <div id="analysisComparisonCards" class="summary-card-grid"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">用户与群体均值差异</div>
+                <div class="card-body">
+                    <div id="analysisClusterBenchmark" class="compare-list-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">健康度四维拆解</div>
+                <div class="card-body">
+                    <div id="analysisDimensions" class="compare-list-grid"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">异常行为时间线</div>
+                <div class="card-body">
+                    <div id="analysisTimeline" class="timeline-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">分析历史</div>
+                <div class="card-body">
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>分析日期</th>
+                                <th>更新时间</th>
+                                <th>日均在线</th>
+                                <th>学习流量占比</th>
+                                <th>晚归次数</th>
+                                <th>健康度</th>
+                            </tr>
+                            </thead>
+                            <tbody id="analysisHistoryTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">开放预警</div>
+                <div class="card-body">
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>类型</th>
+                                <th>等级</th>
+                                <th>风险分</th>
+                                <th>触发说明</th>
+                                <th>建议</th>
+                                <th>创建时间</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userWarningsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 多维度分析</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/analysis.js"></script>
+</body>
+</html>

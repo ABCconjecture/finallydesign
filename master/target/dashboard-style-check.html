@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>é¦é¡µçæ¿ - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html" class="active">é¦é¡µ</a></li>
+        <li><a href="analysis.html">å¤ç»´åæ</a></li>
+        <li><a href="users.html">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html">åå°è´¦å·</a></li>
+    </ul>
+</div>
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Campus Behavior Intelligence</div>
+                <h1>æ ¡å­ç½ç¨æ·è¡ä¸ºåææ»è§</h1>
+                <p>
+                    é¦é¡µç»ä¸å±ç¤ºçå®ç¨æ·è§æ¨¡ãå¹³åå¥åº·åº¦ãé¢è­¦è¦ççãä½å¥åº·å³æ³¨å¯¹è±¡åææ°åæå¿«ç§è¶å¿ã
+                    ç®¡çåå¯ä»¥å¨è¿éç´æ¥æäº¤å¨éåæãç»åéå»ºåé¢è­¦åæ­¥ä»»å¡ã
+                </p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="analysis.html">æ¥çå¤ç»´åæ</a>
+                <a class="btn btn-primary" href="warning.html">æ¥çé¢è­¦ç®¡ç</a>
+                <a class="btn btn-success" href="profile.html">æ¥çç¨æ·ç»å</a>
+            </div>
+        </div>
+    </div>
+    <div id="dashboardMessage"></div>
+    <div class="card">
+        <div class="card-header">æ ¸å¿ææ </div>
+        <div class="card-body">
+            <div class="analysis-grid">
+                <div class="metric-card">
+                    <div class="metric-label">æ»ç¨æ·æ°</div>
+                    <div class="metric-value" id="totalUsers">0</div>
+                    <div class="metric-trend" id="totalUsersTrend">å½åçå®æ°æ®åºä¸­çç¨æ·æ»é</div>
+                </div>
+                <div class="metric-card pink">
+                    <div class="metric-label">æªå¤çé¢è­¦</div>
+                    <div class="metric-value" id="unhandledWarnings">0</div>
+                    <div class="metric-trend" id="warningTrend">å½åæé«é£é©ç­çº§ï¼-</div>
+                </div>
+                <div class="metric-card danger">
+                    <div class="metric-label">é«é£é©ç¨æ·</div>
+                    <div class="metric-value" id="highRiskCount">0</div>
+                    <div class="metric-trend" id="highRiskTrend">è¾ä¸ä¸åææ¥ +0</div>
+                </div>
+                <div class="metric-card info">
+                    <div class="metric-label">å¹³åå¥åº·åº¦</div>
+                    <div class="metric-value" id="avgHealth">0.0000000</div>
+                    <div class="metric-trend" id="avgHealthTrend">è¾ä¸ä¸åææ¥ +0.0000000</div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-label">æªé¢è­¦ç¨æ·</div>
+                    <div class="metric-value" id="unwarnedUsers">0</div>
+                    <div class="metric-trend" id="unwarnedTrend">å½åæªå½ä¸­å¼æ¾é¢è­¦çç¨æ·æ°</div>
+                </div>
+                <div class="metric-card warning">
+                    <div class="metric-label">é¢è­¦è¦çç</div>
+                    <div class="metric-value" id="warningCoverage">0%</div>
+                    <div class="metric-trend" id="coverageTrend">å·²é¢è­¦ç¨æ·å æ¯ 0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">å¨éä»»å¡è¿åº¦</div>
+        <div class="card-body">
+            <div id="manualTaskSummary" class="page-filter-banner">æ­£å¨è¯»ååå°ä»»å¡ç¶æ...</div>
+            <div id="manualTaskGrid" class="task-progress-grid"></div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">æè¿åæå¿«ç§è¶å¿</div>
+        <div class="card-body">
+            <div class="task-detail-toolbar">
+                <div>
+                    <div class="table-cell-main">åææ è¶å¿åæ¢</div>
+                    <div id="trendChartHint" class="table-cell-sub">å±ç¤ºæè¿çå®åæå¿«ç§ä¸­çå³é®ååï¼ä¸åä½¿ç¨çº¢è²æ±ç¶å¾ã</div>
+                </div>
+                <div class="trend-switch-group">
+                    <button id="trendHealthButton" class="btn btn-primary btn-small trend-switch-btn active" type="button">å¹³åå¥åº·çº¿</button>
+                    <button id="trendHighRiskButton" class="btn btn-info btn-small trend-switch-btn" type="button">é«é£é©ç¨æ·æ°çº¿</button>
+                </div>
+            </div>
+            <div id="trendChart" class="chart-panel"></div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">ä½å¥åº·åº¦éç¹å³æ³¨</div>
+        <div class="card-body">
+            <div class="page-filter-banner">é¢åå¥åº·åº¦ä½äº 60 çç¨æ·è¿è¡ä¼åå³æ³¨ï¼æ¯æä»é¦é¡µç´æ¥è¿å¥åæè¯¦æä¸é¢è­¦è®°å½ã</div>
+            <div id="lowHealthFocusList" class="attention-list-grid"></div>
+        </div>
+    </div>
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">æ¨æ¥ååæè¦</div>
+            <div class="card-body">
+                <div id="dailySummaryCards" class="summary-card-grid"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">ç¾¤ä½å¥åº·å¯¹æ¯</div>
+            <div class="card-body">
+                <div id="clusterHealthCompareList" class="compare-list-grid"></div>
+            </div>
+        </div>
+    </div>
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">é¢è­¦ç±»åè¦çåå¸</div>
+            <div class="card-body">
+                <div id="warningTypeChart" class="chart-panel chart-panel-small"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">ç¨æ·èç±»åå¸</div>
+            <div class="card-body">
+                <div id="clusterChart" class="chart-panel chart-panel-small"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - é¦é¡µçæ¿</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
+

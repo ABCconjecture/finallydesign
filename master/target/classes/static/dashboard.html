@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页看板 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html" class="active">首页</a></li>
+        <li><a href="analysis.html">多维分析</a></li>
+        <li><a href="users.html">用户列表</a></li>
+        <li><a href="warning.html">预警管理</a></li>
+        <li><a href="profile.html">用户画像</a></li>
+        <li><a href="tasks.html">任务状态</a></li>
+        <li><a href="account.html">后台账号</a></li>
+    </ul>
+</div>
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Campus Behavior Intelligence</div>
+                <h1>校园网用户健康行为分析与画像总览</h1>
+                <p>
+                    首页统一展示真实用户规模、平均健康度、预警覆盖率、低健康关注对象和最新分析快照趋势。
+                    管理员可以在这里直接提交全量分析、画像重建和预警同步任务。
+                </p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="analysis.html">查看多维分析</a>
+                <a class="btn btn-primary" href="warning.html">查看预警管理</a>
+                <a class="btn btn-success" href="profile.html">查看用户画像</a>
+            </div>
+        </div>
+    </div>
+    <div id="dashboardMessage"></div>
+    <div class="card">
+        <div class="card-header">核心指标</div>
+        <div class="card-body">
+            <div class="analysis-grid">
+                <div class="metric-card">
+                    <div class="metric-label">总用户数</div>
+                    <div class="metric-value" id="totalUsers">0</div>
+                    <div class="metric-trend" id="totalUsersTrend">当前真实数据库中的用户总量</div>
+                </div>
+                <div class="metric-card pink">
+                    <div class="metric-label">未处理预警</div>
+                    <div class="metric-value" id="unhandledWarnings">0</div>
+                    <div class="metric-trend" id="warningTrend">当前最高风险等级：-</div>
+                </div>
+                <div class="metric-card danger">
+                    <div class="metric-label">高风险用户</div>
+                    <div class="metric-value" id="highRiskCount">0</div>
+                    <div class="metric-trend" id="highRiskTrend">较上一分析日 +0</div>
+                </div>
+                <div class="metric-card info">
+                    <div class="metric-label">平均健康度</div>
+                    <div class="metric-value" id="avgHealth">0.0000000</div>
+                    <div class="metric-trend" id="avgHealthTrend">较上一分析日 +0.0000000</div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-label">未预警用户</div>
+                    <div class="metric-value" id="unwarnedUsers">0</div>
+                    <div class="metric-trend" id="unwarnedTrend">当前未命中开放预警的用户数</div>
+                </div>
+                <div class="metric-card warning">
+                    <div class="metric-label">预警覆盖率</div>
+                    <div class="metric-value" id="warningCoverage">0%</div>
+                    <div class="metric-trend" id="coverageTrend">已预警用户占比 0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">全量任务进度</div>
+        <div class="card-body">
+            <div id="manualTaskSummary" class="page-filter-banner">正在读取后台任务状态...</div>
+            <div id="manualTaskGrid" class="task-progress-grid"></div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">最近分析快照趋势</div>
+        <div class="card-body">
+            <div class="task-detail-toolbar">
+                <div>
+                    <div class="table-cell-main">单指标趋势切换</div>
+                    <div id="trendChartHint" class="table-cell-sub">展示最近真实分析快照中的关键变化，不再使用红色柱状图。</div>
+                </div>
+                <div class="trend-switch-group">
+                    <button id="trendHealthButton" class="btn btn-primary btn-small trend-switch-btn active" type="button">平均健康线</button>
+                    <button id="trendHighRiskButton" class="btn btn-info btn-small trend-switch-btn" type="button">高风险用户数线</button>
+                </div>
+            </div>
+            <div id="trendChart" class="chart-panel"></div>
+        </div>
+    </div>
+    <div class="card mt-30">
+        <div class="card-header">低健康度重点关注</div>
+        <div class="card-body">
+            <div class="page-filter-banner">面向健康度低于 60 的用户进行优先关注，支持从首页直接进入分析详情与预警记录。</div>
+            <div id="lowHealthFocusList" class="attention-list-grid"></div>
+        </div>
+    </div>
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">昨日变化摘要</div>
+            <div class="card-body">
+                <div id="dailySummaryCards" class="summary-card-grid"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">群体健康对比</div>
+            <div class="card-body">
+                <div id="clusterHealthCompareList" class="compare-list-grid"></div>
+            </div>
+        </div>
+    </div>
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">预警类型覆盖分布</div>
+            <div class="card-body">
+                <div id="warningTypeChart" class="chart-panel chart-panel-small"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">用户聚类分布</div>
+            <div class="card-body">
+                <div id="clusterChart" class="chart-panel chart-panel-small"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 首页看板</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+﻿ï»¿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>é¢è­¦ç®¡ç - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">é¦é¡µ</a></li>
+        <li><a href="analysis.html">å¤ç»´åæ</a></li>
+        <li><a href="users.html">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html" class="active">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html">åå°è´¦å·</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Warning Control Console</div>
+                <h1>é¢è­¦ç®¡çä¸é£é©å¤ç½®</h1>
+                <p>ç»ä¸å±ç¤ºå¼æ¾é¢è­¦ãé«é£é©ç¨æ·ãä½å¥åº·å¾å¤æ ¸å¯¹è±¡ãé¢è­¦ç­çº§ä¸è§åå½ä¸­åå¸ï¼å¸®å©ç®¡çååè¾å¯¼åæ´å¿«è¯å«éç¹å¯¹è±¡å¹¶å½¢æå¤ç½®é­ç¯ã</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="analysis.html">æ¥çå¤ç»´åæ</a>
+                <a class="btn btn-success" href="profile.html">æ¥çç¨æ·ç»å</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">é¢è­¦æ»è§</div>
+        <div class="card-body">
+            <div class="analysis-grid grid-3">
+                <div class="metric-card danger">
+                    <div class="metric-label">æªå¤çé¢è­¦</div>
+                    <div class="metric-value" id="unhandledCount">0</div>
+                    <div class="metric-trend" id="highestRiskLevel">æé«é£é©ç­çº§ï¼-</div>
+                </div>
+                <div class="metric-card warning">
+                    <div class="metric-label">é«é£é©ç¨æ·</div>
+                    <div class="metric-value" id="highRiskUserCount">0</div>
+                    <div class="metric-trend" id="warnedUsersCount">å·²é¢è­¦ç¨æ· 0 äºº</div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-label">æªé¢è­¦ç¨æ·</div>
+                    <div class="metric-value" id="unwarnedUserCount">0</div>
+                    <div class="metric-trend" id="warningCoverageText">è¦çç 0%</div>
+                </div>
+            </div>
+            <div id="warningFilterBanner" class="page-filter-banner">å½åå±ç¤ºå¨é¨å¼æ¾é¢è­¦è®°å½ã</div>
+            <p id="warningActionHint" class="metric-trend mt-20">ç®¡çåå¯ä»¥å¤çé¢è­¦ï¼æ¥çåä»å¯æµè§ç»è®¡ãè¯¦æååé¡µç»æã</p>
+        </div>
+    </div>
+
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">é¢è­¦å¤ç½®æ¼æ</div>
+            <div class="card-body">
+                <div id="warningFunnelChart" class="chart-panel chart-panel-small"></div>
+                <div id="warningFunnelSummary" class="summary-card-grid mt-20"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">é¢è­¦ç­çº§åå¸</div>
+            <div class="card-body">
+                <div id="warningLevelChart" class="chart-panel chart-panel-small"></div>
+                <div id="warningLevelSummary" class="summary-card-grid mt-20"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">è§åå½ä¸­æè¡</div>
+        <div class="card-body">
+            <div class="page-filter-banner">æå¼æ¾é¢è­¦ä¸­è§¦åé¢çæé«çè§åå±ç¤ºï¼æ¹ä¾¿å®ä½å½åé£é©ä¸»è¦æ¥æºã</div>
+            <div id="warningRuleRanking" class="compare-list-grid mt-20"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">ä½å¥åº·æªé¢è­¦å¾å¤æ ¸</div>
+        <div class="card-body">
+            <div class="page-filter-banner">è¿é¨åç¨æ·å°æªå½ä¸­å¼æ¾é¢è­¦ï¼ä½å¥åº·åº¦å·²ç»ä½äº 60ï¼éåè¾å¯¼åæç®¡çåä¼åäººå·¥å¤æ ¸ã</div>
+            <div id="lowHealthReviewSummary" class="summary-card-grid mt-20"></div>
+            <div id="lowHealthUnwarnedList" class="attention-list-grid mt-20"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">é¢è­¦ç±»åè¦çåå¸</div>
+        <div class="card-body">
+            <div id="warningTypeChart" class="chart-panel chart-panel-small"></div>
+            <div id="warningTypeSummary" class="analysis-grid grid-4 mt-20"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">é«é£é©ç¨æ·</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>å­¦å· / å§å</th>
+                        <th>å­¦é¢ / ä¸ä¸</th>
+                        <th>æå¨ç¾¤ä½</th>
+                        <th>å¥åº·åº¦</th>
+                        <th>é£é©å</th>
+                        <th>é¢è­¦æ°</th>
+                        <th>æé«ç­çº§</th>
+                        <th>æ ¸å¿é¢è­¦</th>
+                        <th>ç¶æ</th>
+                        <th>æä½</th>
+                    </tr>
+                    </thead>
+                    <tbody id="highRiskTable">
+                    <tr><td colspan="10" class="table-loading-cell"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="highRiskPrevButton" class="btn btn-primary btn-small" onclick="prevHighRiskPage()">ä¸ä¸é¡µ</button>
+                <span id="highRiskPageInfo" class="table-pager-info">ç¬¬ 1 é¡µ / å± 1 é¡µï¼åè®¡ 0 æ¡</span>
+                <button id="highRiskNextButton" class="btn btn-primary btn-small" onclick="nextHighRiskPage()">ä¸ä¸é¡µ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">æªå¤çé¢è­¦åè¡¨</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ç¨æ·</th>
+                        <th>ç¾¤ä½ / ç¶æ</th>
+                        <th>é¢è­¦ç±»å</th>
+                        <th>ç­çº§</th>
+                        <th>é£é© / å¥åº·</th>
+                        <th>è§¦åè¯´æ</th>
+                        <th>å»ºè®®</th>
+                        <th>åå»ºæ¶é´</th>
+                        <th>æä½</th>
+                    </tr>
+                    </thead>
+                    <tbody id="warningTable">
+                    <tr><td colspan="9" class="table-loading-cell"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="warningPrevButton" class="btn btn-primary btn-small" onclick="prevWarningPage()">ä¸ä¸é¡µ</button>
+                <span id="warningPageInfo" class="table-pager-info">ç¬¬ 1 é¡µ / å± 1 é¡µï¼åè®¡ 0 æ¡</span>
+                <button id="warningNextButton" class="btn btn-primary btn-small" onclick="nextWarningPage()">ä¸ä¸é¡µ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - é¢è­¦ç®¡ç</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/warning.js"></script>
+</body>
+</html>
+

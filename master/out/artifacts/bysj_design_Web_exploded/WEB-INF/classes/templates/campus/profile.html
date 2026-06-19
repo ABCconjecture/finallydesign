@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户画像</title>
+    <link href="/css/campus.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar(currentPage='users')}"></div>
+
+<!-- 原背景图已移除 -->
+<div class="main-concent">
+    <div style="display: flex; gap: 20px;">
+        <div style="flex:1;">
+            <div class="card">
+                <div class="card-header">基本信息</div>
+                <div class="card-body" id="userInfo"></div>
+            </div>
+        </div>
+        <div style="flex:2;">
+            <div class="card">
+                <div class="card-header">特征雷达图</div>
+                <div class="card-body">
+                    <div id="profileRadar" style="height:350px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 20px;">
+        <div class="card">
+            <div class="card-header">画像标签</div>
+            <div class="card-body" id="profileTags"></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网行为分析系统 - 数据驱动管理</p>
+</div>
+
+<script>
+    $(function() {
+        var userId = window.location.pathname.split('/').pop();
+        $.get("/api/campus/profile/" + userId, function(data) {
+            var user = data.user;
+            var profile = data.profile;
+            $('#userInfo').html(`
+                    <p><strong>学号：</strong>${user.studentId}</p>
+                    <p><strong>姓名：</strong>${user.name}</p>
+                    <p><strong>学院：</strong>${user.college}</p>
+                    <p><strong>专业：</strong>${user.major}</p>
+                    <p><strong>班级：</strong>${user.clazz}</p>
+                `);
+            var tags = JSON.parse(profile.tags);
+            var tagsHtml = '<span class="badge" style="background:#4a90e2; color:white; padding:5px 10px; margin:5px; display:inline-block;">簇：' + profile.clusterId + '</span>';
+            for (let key in tags) {
+                tagsHtml += `<span class="badge" style="background:#6c757d; color:white; padding:5px 10px; margin:5px; display:inline-block;">${key}: ${tags[key]}</span>`;
+            }
+            $('#profileTags').html(tagsHtml);
+
+            // 雷达图
+            $.get("/api/campus/profile/" + userId + "/radar", function(radarData) {
+                var radar = echarts.init(document.getElementById('profileRadar'));
+                var option = {
+                    radar: {
+                        indicator: radarData.indicator.map(name => ({ name: name, max: 100 })),
+                        shape: 'circle'
+                    },
+                    series: [{
+                        type: 'radar',
+                        data: [{ value: radarData.value, name: '当前用户' }],
+                        areaStyle: { opacity: 0.3 }
+                    }]
+                };
+                radar.setOption(option);
+            });
+        });
+    });
+</script>
+</body>
+</html>

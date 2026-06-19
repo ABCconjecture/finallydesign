@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台账号 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">首页</a></li>
+        <li><a href="analysis.html">多维分析</a></li>
+        <li><a href="users.html">用户列表</a></li>
+        <li><a href="warning.html">预警管理</a></li>
+        <li><a href="profile.html">用户画像</a></li>
+        <li><a href="tasks.html">任务状态</a></li>
+        <li><a href="account.html" class="active">后台账号</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Admin Identity Studio</div>
+                <h1>后台账号与角色治理</h1>
+                <p>统一管理管理员与查看员账号，支持资料维护、密码更新、角色分级和账号启停，确保分析、画像、预警与任务操作具备清晰的权限边界。</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="tasks.html">查看任务状态</a>
+                <a class="btn btn-primary" href="dashboard.html">返回首页看板</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">后台账号管理</div>
+        <div class="card-body">
+            <div class="account-summary">
+                <div>
+                    <div class="metric-label">当前管理员</div>
+                    <div class="metric-value" id="currentAccountName">-</div>
+                    <div class="metric-trend" id="currentAccountMeta">-</div>
+                </div>
+                <div class="account-summary-note">
+                    <p>建议流程：先创建正式管理员账号，再登录新账号，最后停用初始化管理员。</p>
+                    <p>系统只有在没有任何账号时才会创建初始化管理员，后续重启不会自动补回旧默认账号。</p>
+                    <p>角色分级：管理员可触发分析、处理预警与管理账号；查看员仅保留只读访问权限。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="account-grid mt-30">
+        <div class="card">
+            <div class="card-header">修改当前账号资料</div>
+            <div class="card-body">
+                <form id="profileForm">
+                    <div class="mb-20">
+                        <label class="account-label" for="profileUsername">用户名</label>
+                        <input id="profileUsername" type="text" minlength="4" maxlength="32" required>
+                    </div>
+                    <div class="mb-20">
+                        <label class="account-label" for="profileDisplayName">显示名称</label>
+                        <input id="profileDisplayName" type="text" maxlength="32" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit">保存资料</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">修改当前密码</div>
+            <div class="card-body">
+                <form id="passwordForm">
+                    <div class="mb-20">
+                        <label class="account-label" for="currentPassword">当前密码</label>
+                        <input id="currentPassword" type="password" autocomplete="current-password" required>
+                    </div>
+                    <div class="mb-20">
+                        <label class="account-label" for="newPassword">新密码</label>
+                        <input id="newPassword" type="password" autocomplete="new-password" minlength="8" required>
+                    </div>
+                    <div class="mb-20">
+                        <label class="account-label" for="confirmPassword">确认新密码</label>
+                        <input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required>
+                    </div>
+                    <button class="btn btn-warning" type="submit">更新密码</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">新增后台账号</div>
+        <div class="card-body">
+            <form id="createUserForm" class="account-form-inline">
+                <div>
+                    <label class="account-label" for="newAccountUsername">用户名</label>
+                    <input id="newAccountUsername" type="text" minlength="4" maxlength="32" required>
+                </div>
+                <div>
+                    <label class="account-label" for="newAccountDisplayName">显示名称</label>
+                    <input id="newAccountDisplayName" type="text" maxlength="32" required>
+                </div>
+                <div>
+                    <label class="account-label" for="newAccountRole">角色</label>
+                    <select id="newAccountRole" required>
+                        <option value="VIEWER">查看员</option>
+                        <option value="ADMIN">管理员</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="account-label" for="newAccountPassword">初始密码</label>
+                    <input id="newAccountPassword" type="password" minlength="8" required>
+                </div>
+                <div class="account-form-action">
+                    <button class="btn btn-success" type="submit">创建账号</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">账号列表</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>显示名称</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>最近登录</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="accountUsersTable">
+                    <tr><td colspan="8" style="text-align: center; padding: 30px;"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 后台账号管理</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/account.js"></script>
+</body>
+</html>

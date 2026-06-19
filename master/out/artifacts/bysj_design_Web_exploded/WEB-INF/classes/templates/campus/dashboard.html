@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>校园网行为分析-首页</title>
+    <link href="/css/campus.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!-- 导航栏 -->
+<div th:replace="~{fragments/navbar :: navbar(currentPage='dashboard')}"></div>
+
+<!-- 主要内容区域（原背景图已移除） -->
+<div class="main-concent">
+    <!-- 统计卡片行 -->
+    <div class="row" id="statsCards" style="display: flex; justify-content: space-around; margin-bottom: 30px;">
+        <div class="stat-card" style="flex:1; margin:0 10px;">
+            <div class="stat-icon">👥</div>
+            <div class="stat-value" id="totalUsers">0</div>
+            <div class="stat-label">用户总数</div>
+        </div>
+        <div class="stat-card" style="flex:1; margin:0 10px;">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-value" id="unhandledWarnings">0</div>
+            <div class="stat-label">未处理预警</div>
+        </div>
+        <div class="stat-card" style="flex:1; margin:0 10px;">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value" id="avgOnlineHours">0</div>
+            <div class="stat-label">日均上网(小时)</div>
+        </div>
+        <div class="stat-card" style="flex:1; margin:0 10px;">
+            <div class="stat-icon">🟢</div>
+            <div class="stat-value" id="activeUsers">0</div>
+            <div class="stat-label">今日活跃</div>
+        </div>
+    </div>
+
+    <!-- 图表行 -->
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div style="flex:1; min-width:300px;">
+            <div class="card">
+                <div class="card-header">用户分群特征雷达图</div>
+                <div class="card-body">
+                    <div id="radarChart" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+        <div style="flex:1; min-width:300px;">
+            <div class="card">
+                <div class="card-header">近7天上网趋势</div>
+                <div class="card-body">
+                    <div id="trendChart" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预警分类统计 -->
+    <div style="margin-top: 30px;">
+        <div class="card">
+            <div class="card-header">预警分类统计</div>
+            <div class="card-body">
+                <div id="warningPieChart" class="chart-container" style="height:300px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聚类分布柱状图 -->
+    <div style="margin-top: 30px;">
+        <div class="card">
+            <div class="card-header">用户聚类分布</div>
+            <div class="card-body">
+                <div id="clusterBarChart" class="chart-container" style="height:400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+    <p>© 2026 校园网行为分析系统 - 数据驱动管理</p>
+</div>
+
+<script>
+    $(function() {
+        // 加载统计卡片
+        $.get("/api/campus/stats", function(data) {
+            $("#totalUsers").text(data.totalUsers);
+            $("#unhandledWarnings").text(data.unhandledWarnings);
+            $("#avgOnlineHours").text(data.avgOnlineHours.toFixed(1));
+            $("#activeUsers").text(data.activeUsers);
+        });
+
+        // 雷达图
+        $.get("/api/campus/clusterRadar", function(data) {
+            var radar = echarts.init(document.getElementById('radarChart'));
+            var option = {
+                radar: {
+                    indicator: data.indicator.map(name => ({ name: name, max: 100 })),
+                    shape: 'circle',
+                    name: { textStyle: { color: '#333', fontSize: 12 } }
+                },
+                series: [{
+                    type: 'radar',
+                    data: data.series.map(item => ({
+                        name: item.name,
+                        value: item.value,
+                        areaStyle: { opacity: 0.2 }
+                    }))
+                }]
+            };
+            radar.setOption(option);
+        });
+
+        // 趋势图
+        $.get("/api/campus/trend", function(data) {
+            var trend = echarts.init(document.getElementById('trendChart'));
+            var option = {
+                xAxis: { type: 'category', data: data.days },
+                yAxis: { type: 'value', name: '小时' },
+                series: [{
+                    type: 'line',
+                    data: data.avgDuration,
+                    smooth: true,
+                    lineStyle: { color: '#4a90e2', width: 3 },
+                    areaStyle: { color: 'rgba(74,144,226,0.1)' }
+                }]
+            };
+            trend.setOption(option);
+        });
+
+        // 预警饼图
+        $.get("/api/campus/warning/stats", function(data) {
+            var pie = echarts.init(document.getElementById('warningPieChart'));
+            var option = {
+                tooltip: { trigger: 'item' },
+                legend: { orient: 'vertical', left: 'left' },
+                series: [{
+                    type: 'pie',
+                    radius: '50%',
+                    data: data.types.map((type, idx) => ({ name: type, value: data.counts[idx] })),
+                    emphasis: { scale: true },
+                    color: ['#2a5c8a', '#4a90e2', '#50c878', '#f39c12', '#e74c3c']
+                }]
+            };
+            pie.setOption(option);
+        });
+
+        // 聚类分布柱状图
+        $.get("/api/campus/cluster/counts", function(data) {
+            var barChart = echarts.init(document.getElementById('clusterBarChart'));
+            var clusters = data.map(item => '簇 ' + item.clusterId);
+            var counts = data.map(item => item.count);
+            var option = {
+                title: { text: '各簇学生数量', left: 'center' },
+                xAxis: { type: 'category', data: clusters },
+                yAxis: { type: 'value' },
+                series: [{
+                    type: 'bar',
+                    data: counts,
+                    itemStyle: { color: '#4a90e2' }
+                }],
+                tooltip: { trigger: 'item' }
+            };
+            barChart.setOption(option);
+
+            barChart.on('click', function(params) {
+                if (params.componentType === 'series') {
+                    var clusterId = params.name.split(' ')[1];
+                    window.location.href = '/campus/cluster/' + clusterId;
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

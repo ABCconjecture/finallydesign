@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预警管理 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">首页</a></li>
+        <li><a href="analysis.html">多维分析</a></li>
+        <li><a href="users.html">用户列表</a></li>
+        <li><a href="warning.html" class="active">预警管理</a></li>
+        <li><a href="profile.html">用户画像</a></li>
+        <li><a href="tasks.html">任务状态</a></li>
+        <li><a href="account.html">后台账号</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Warning Control Console</div>
+                <h1>预警管理与风险处置</h1>
+                <p>统一展示开放预警、高风险用户、低健康待复核对象、预警等级与规则命中分布，帮助管理员和辅导员更快识别重点对象并形成处置闭环。</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="analysis.html">查看多维分析</a>
+                <a class="btn btn-success" href="profile.html">查看用户画像</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">预警总览</div>
+        <div class="card-body">
+            <div class="analysis-grid grid-3">
+                <div class="metric-card danger">
+                    <div class="metric-label">未处理预警</div>
+                    <div class="metric-value" id="unhandledCount">0</div>
+                    <div class="metric-trend" id="highestRiskLevel">最高风险等级：-</div>
+                </div>
+                <div class="metric-card warning">
+                    <div class="metric-label">高风险用户</div>
+                    <div class="metric-value" id="highRiskUserCount">0</div>
+                    <div class="metric-trend" id="warnedUsersCount">已预警用户 0 人</div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-label">未预警用户</div>
+                    <div class="metric-value" id="unwarnedUserCount">0</div>
+                    <div class="metric-trend" id="warningCoverageText">覆盖率 0%</div>
+                </div>
+            </div>
+            <div id="warningFilterBanner" class="page-filter-banner">当前展示全部开放预警记录。</div>
+            <p id="warningActionHint" class="metric-trend mt-20">管理员可以处理预警；查看员仅可浏览统计、详情和分页结果。</p>
+        </div>
+    </div>
+
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">预警处置漏斗</div>
+            <div class="card-body">
+                <div id="warningFunnelChart" class="chart-panel chart-panel-small"></div>
+                <div id="warningFunnelSummary" class="summary-card-grid mt-20"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">预警等级分布</div>
+            <div class="card-body">
+                <div id="warningLevelChart" class="chart-panel chart-panel-small"></div>
+                <div id="warningLevelSummary" class="summary-card-grid mt-20"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">规则命中排行</div>
+        <div class="card-body">
+            <div class="page-filter-banner">按开放预警中触发频率最高的规则展示，方便定位当前风险主要来源。</div>
+            <div id="warningRuleRanking" class="compare-list-grid mt-20"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">低健康未预警待复核</div>
+        <div class="card-body">
+            <div class="page-filter-banner">这部分用户尚未命中开放预警，但健康度已经低于 60，适合辅导员或管理员优先人工复核。</div>
+            <div id="lowHealthReviewSummary" class="summary-card-grid mt-20"></div>
+            <div id="lowHealthUnwarnedList" class="attention-list-grid mt-20"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">预警类型覆盖分布</div>
+        <div class="card-body">
+            <div id="warningTypeChart" class="chart-panel chart-panel-small"></div>
+            <div id="warningTypeSummary" class="analysis-grid grid-4 mt-20"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">高风险用户</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>学号 / 姓名</th>
+                        <th>学院 / 专业</th>
+                        <th>所在群体</th>
+                        <th>健康度</th>
+                        <th>风险分</th>
+                        <th>预警数</th>
+                        <th>最高等级</th>
+                        <th>核心预警</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="highRiskTable">
+                    <tr><td colspan="10" class="table-loading-cell"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="highRiskPrevButton" class="btn btn-primary btn-small" onclick="prevHighRiskPage()">上一页</button>
+                <span id="highRiskPageInfo" class="table-pager-info">第 1 页 / 共 1 页，合计 0 条</span>
+                <button id="highRiskNextButton" class="btn btn-primary btn-small" onclick="nextHighRiskPage()">下一页</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">未处理预警列表</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>群体 / 状态</th>
+                        <th>预警类型</th>
+                        <th>等级</th>
+                        <th>风险 / 健康</th>
+                        <th>触发说明</th>
+                        <th>建议</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="warningTable">
+                    <tr><td colspan="9" class="table-loading-cell"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="warningPrevButton" class="btn btn-primary btn-small" onclick="prevWarningPage()">上一页</button>
+                <span id="warningPageInfo" class="table-pager-info">第 1 页 / 共 1 页，合计 0 条</span>
+                <button id="warningNextButton" class="btn btn-primary btn-small" onclick="nextWarningPage()">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 预警管理</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/warning.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="bysj-design:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>bysj-design</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="bysj-design-1.0.0.war">
+      <element id="artifact" artifact-name="bysj-design:war exploded" />
+    </root>
+  </artifact>
+</component>

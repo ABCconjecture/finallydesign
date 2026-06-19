@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ç»å½ - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body class="auth-page">
+<div class="auth-layout">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <h1>æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</h1>
+            <p>ç»å½åå¯æè§è²è®¿é®ç³»ç»åè½ãæ¥çåä»ä¿çåªè¯»æéï¼ç®¡çåå¯æ§è¡åæä»»å¡ä¸é¢è­¦å¤çã</p>
+        </div>
+        <div class="auth-card-body">
+            <div class="alert alert-danger hidden" id="loginError"></div>
+            <form id="loginForm">
+                <div class="mb-20">
+                    <label for="username" class="auth-label">ç¨æ·å</label>
+                    <input id="username" name="username" type="text" autocomplete="username" placeholder="è¯·è¾å¥ç¨æ·åï¼ä¾å¦ï¼å½­äºæ" required>
+                </div>
+                <div class="mb-20">
+                    <label for="password" class="auth-label">å¯ç </label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="è¯·è¾å¥å¯ç " required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="loginButton">ç»å½</button>
+            </form>
+            <div class="auth-hint">
+                <p><strong>å½åæ¼ç¤ºè´¦å·ï¼</strong><code>å½­äºæ</code> / <code>123456</code></p>
+                <p>é¨ç½²åå»ºè®®å°½å¿«å¨âåå°è´¦å·âé¡µé¢åå»ºæ­£å¼ç®¡çåè´¦å·ï¼å¹¶åç¨æ¼ç¤ºè´¦å·ã</p>
+                <p>å¦éä¿®æ¹å¼å¯¼è´¦å·ï¼å¯éè¿ <code>APP_BOOTSTRAP_USERNAME</code>ã<code>APP_BOOTSTRAP_PASSWORD</code>ã<code>APP_BOOTSTRAP_DISPLAY_NAME</code> è¦çé»è®¤å¼ã</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,162 @@
+﻿ï»¿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>å¤ç»´åº¦åæ - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">é¦é¡µ</a></li>
+        <li><a class="active" href="analysis.html">å¤ç»´åº¦åæ</a></li>
+        <li><a href="users.html">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html">åå°è´¦å·</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">User Intelligence Workspace</div>
+                <h1>åç¨æ·å¤ç»´åº¦åæ</h1>
+                <p>æ¯ææå­¦å·ãå§åæç¨æ· ID æç´¢ç¨æ·ï¼èå¨å±ç¤ºå¥åº·åº¦ãç»åå½å±ãé·è¾¾ç»åãåç»´æè§£ãç¾¤ä½å¯¹æ¯ãåå²åæä¸å¼æ¾é¢è­¦ã</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-info" href="users.html">è¿åç¨æ·åè¡¨</a>
+                <a class="btn btn-success" href="profile.html">æ¥çèç±»ç»å</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">ç¨æ·æç´¢</div>
+        <div class="card-body">
+            <div class="page-filter-grid">
+                <input id="searchInput" type="text" placeholder="è¾å¥å­¦å·ãå§åæç¨æ· ID æç´¢">
+                <button id="searchButton" class="btn btn-primary">æ¥è¯¢ç¨æ·</button>
+                <button id="resetButton" class="btn btn-warning">æ¸ç©ºç»æ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="analysisEmptyState" class="card mt-30">
+        <div class="card-body table-empty-cell">è¯·è¾å¥å­¦å·æå§ååæ¥çå¯¹åºç¨æ·çå¤ç»´åæç»æã</div>
+    </div>
+
+    <div id="analysisContent" style="display:none;">
+        <div id="analysisHealthAlert" class="alert alert-warning" style="display:none;"></div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">ç¨æ·æ¦è¦</div>
+                <div class="card-body">
+                    <div id="userBasicInfo" class="detail-list"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">ç»åé·è¾¾å¾</div>
+                <div class="card-body">
+                    <div id="userRadarChart" class="chart-panel chart-panel-medium"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-30">
+            <div class="card-header">æ ¸å¿ææ </div>
+            <div class="card-body">
+                <div id="userMetrics" class="analysis-grid grid-4"></div>
+            </div>
+        </div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">è¾ä¸ä¸åæå¨æåå</div>
+                <div class="card-body">
+                    <div id="analysisComparisonCards" class="summary-card-grid"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">ç¨æ·ä¸ç¾¤ä½åå¼å·®å¼</div>
+                <div class="card-body">
+                    <div id="analysisClusterBenchmark" class="compare-list-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">å¥åº·åº¦åç»´æè§£</div>
+                <div class="card-body">
+                    <div id="analysisDimensions" class="compare-list-grid"></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">å¼å¸¸è¡ä¸ºæ¶é´çº¿</div>
+                <div class="card-body">
+                    <div id="analysisTimeline" class="timeline-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-grid grid-2 mt-30">
+            <div class="card">
+                <div class="card-header">åæåå²</div>
+                <div class="card-body">
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>åææ¥æ</th>
+                                <th>æ´æ°æ¶é´</th>
+                                <th>æ¥åå¨çº¿</th>
+                                <th>å­¦ä¹ æµéå æ¯</th>
+                                <th>æå½æ¬¡æ°</th>
+                                <th>å¥åº·åº¦</th>
+                            </tr>
+                            </thead>
+                            <tbody id="analysisHistoryTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">å¼æ¾é¢è­¦</div>
+                <div class="card-body">
+                    <div style="overflow-x:auto;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ç±»å</th>
+                                <th>ç­çº§</th>
+                                <th>é£é©å</th>
+                                <th>è§¦åè¯´æ</th>
+                                <th>å»ºè®®</th>
+                                <th>åå»ºæ¶é´</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userWarningsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - å¤ç»´åº¦åæ</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/analysis.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ç¨æ·ç»å - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">é¦é¡µ</a></li>
+        <li><a href="analysis.html">å¤ç»´åæ</a></li>
+        <li><a href="users.html">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html" class="active">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html">åå°è´¦å·</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Cluster Intelligence Overview</div>
+                <h1>ç¨æ·èç±»ç»åæ»è§</h1>
+                <p>å±ç¤ºäºç±»ç¨æ·ç¾¤ä½çè§æ¨¡ãå¹³åå¥åº·åº¦ãé¢è­¦è¦ççåç°åç¨æ·è¯¦æï¼å¸®å©å¿«éè¯å«éç¹ç¾¤ä½ä¸å¸åç¨æ·ã</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-primary" href="users.html">æ¥çå¨é¨ç¨æ·</a>
+                <a class="btn btn-info" href="warning.html">æ¥çé¢è­¦ç®¡ç</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">ç¾¤ä½åå¸</div>
+        <div class="card-body">
+            <div id="clusterDistributionChart" class="chart-panel"></div>
+            <div id="clusterOverviewCards" class="analysis-grid grid-3"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">ç¾¤ä½åæ¢ä¸æè¦</div>
+        <div class="card-body">
+            <div id="clusterActionButtons" class="task-card-actions cluster-switch-grid"></div>
+            <div id="clusterSummaryPanel" class="analysis-grid grid-4 mt-20">
+                <div class="metric-card info">
+                    <div class="metric-label">å½åç¾¤ä½</div>
+                    <div class="metric-value" id="selectedClusterLabel">æªéæ©</div>
+                    <div class="metric-trend" id="selectedClusterFocus">è¯·åéæ©ä¸æ¹ç¾¤ä½</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">ç¾¤ä½è§æ¨¡</div>
+                    <div class="metric-value" id="selectedClusterCount">0</div>
+                    <div class="metric-trend" id="selectedClusterWarningRate">é¢è­¦è¦çç 0%</div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-label">å¹³åå¥åº·åº¦</div>
+                    <div class="metric-value" id="selectedClusterHealth">0</div>
+                    <div class="metric-trend" id="selectedClusterRisk">å¹³åé£é© 0</div>
+                </div>
+                <div class="metric-card danger">
+                    <div class="metric-label">é¢è­¦ç¨æ·æ°</div>
+                    <div class="metric-value" id="selectedClusterWarnings">0</div>
+                    <div class="metric-trend" id="selectedClusterStudy">ä½å¥åº·ç¨æ· 0 äºº Â· å­¦ä¹ æµéå æ¯ 0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">ç¾¤ä½å¹³åé·è¾¾å¾</div>
+            <div class="card-body">
+                <div id="clusterRadarChart" class="chart-panel chart-panel-small"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">ç¾¤ä½é£é©æ¥æº</div>
+            <div class="card-body">
+                <div id="clusterRiskSources" class="compare-list-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">å¸åç¨æ·æ ·æ¬</div>
+        <div class="card-body">
+            <div id="clusterTypicalSamples" class="attention-list-grid"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">ç°åç¨æ·è¯¦æ</div>
+        <div class="card-body">
+            <div style="overflow-x:auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>å­¦å·å§å</th>
+                        <th>å­¦é¢ä¸ä¸</th>
+                        <th>æå¨ç¾¤ä½</th>
+                        <th>å¥åº·åº¦</th>
+                        <th>é£é©å</th>
+                        <th>é¢è­¦æ°</th>
+                        <th>ç¶æ</th>
+                        <th>ç¾¤ä½æè¦</th>
+                    </tr>
+                    </thead>
+                    <tbody id="clusterUsersTable">
+                    <tr><td colspan="8" class="table-empty-cell">è¯·éæ©ä¸æ¹ä»»ä¸ç¾¤ä½æ¥çç¨æ·è¯¦æã</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="clusterUsersPrevButton" class="btn btn-primary btn-small" type="button" onclick="prevClusterUsersPage()">ä¸ä¸é¡µ</button>
+                <span id="clusterUsersPageInfo" class="table-pager-info">ç¬¬ 1 é¡µ / å± 1 é¡µï¼åè®¡ 0 æ¡</span>
+                <button id="clusterUsersNextButton" class="btn btn-primary btn-small" type="button" onclick="nextClusterUsersPage()">ä¸ä¸é¡µ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - ç¨æ·ç»å</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>
+

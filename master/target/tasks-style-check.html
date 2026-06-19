@@ -1,0 +1,107 @@
+﻿ï»¿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ä»»å¡ç¶æ - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">é¦é¡µ</a></li>
+        <li><a href="analysis.html">å¤ç»´åæ</a></li>
+        <li><a href="users.html">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html" class="active">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html">åå°è´¦å·</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="alert alert-info" id="taskActionMessage">
+        ä»»å¡çæ¿ä¼å±ç¤º Quartz è°åº¦å¨ç¶æãéç¾¤èç¹å¿è·³ï¼å¹¶æ¯æå¤±è´¥éè¯ãå·å´éå¶æç¤ºãåé¡µæ¥å¿ãæä½å®¡è®¡æç±»å/ç»æ/æä½äºº/æ¶é´èå´ç­éå¯¼åºï¼ä»¥åè¯¦æä¸é®å¤å¶ã
+    </div>
+
+    <div class="card">
+        <div class="card-header">è°åº¦å¨æ¦è§</div>
+        <div class="card-body">
+            <div class="analysis-grid" id="schedulerSummary">
+                <div class="metric-card info">
+                    <div class="metric-label">è°åº¦å¨</div>
+                    <div class="metric-value">å è½½ä¸­</div>
+                    <div class="metric-trend">æ­£å¨è¯»åè°åº¦å¨åæ°æ®...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">éç¾¤èç¹å¿è·³</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table cluster-node-table">
+                    <thead>
+                    <tr>
+                        <th>èç¹å®ä¾</th>
+                        <th>æè¿å¿è·³</th>
+                        <th>æ£æ¥é´é</th>
+                        <th>ç¶æ</th>
+                    </tr>
+                    </thead>
+                    <tbody id="clusterNodeTable">
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-light);">æ­£å¨å è½½éç¾¤èç¹ä¿¡æ¯...</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">ä»»å¡æ§è¡æç»</div>
+        <div class="card-body">
+            <div class="task-toolbar">
+                <div class="task-toolbar-note" id="taskToolbarNote">ç®¡çåå¯å¨æ­¤æå¨æ§è¡ãå¤±è´¥éè¯ãæåææ¢å¤ä»»å¡ï¼å¤±è´¥éè¯ä¼è®°å½å®¡æ¹å¤æ³¨åéè¯åå ï¼æ¥å¿ä¸å®¡è®¡ä¼æé¡µå è½½ï¼å¹¶æ¯æä»å¤©ãè¿7å¤©ãè¿30å¤©åèªå®ä¹æè¿ N å°æ¶å¿«æ·ç­éï¼å®¡æ¹å¤æ³¨å¨è¡¨æ ¼ä¸­é»è®¤æªæ­ãæ¬æµ®å¯æ¥çå¨æã</div>
+                <button type="button" class="btn btn-primary btn-small" id="refreshTaskStatusButton">å·æ°ç¶æ</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ä»»å¡</th>
+                        <th>Cron</th>
+                        <th>è§¦åå¨ç¶æ</th>
+                        <th>æè¿ç»æ</th>
+                        <th>å¤çæ°é</th>
+                        <th>ä¸æ¬¡å®æ</th>
+                        <th>ä¸æ¬¡æ§è¡</th>
+                        <th>æè¦</th>
+                        <th>æä½</th>
+                    </tr>
+                    </thead>
+                    <tbody id="taskStatusTable">
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 30px;">
+                            <div class="spinner"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - ä»»å¡ç¶æçæ¿</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/tasks.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <style>
+        .splash-layout {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .splash-card {
+            width: min(480px, 100%);
+            text-align: center;
+            padding: 40px 32px;
+        }
+
+        .splash-card h1 {
+            font-size: 40px;
+            margin: 14px 0 10px;
+        }
+
+        .splash-card p {
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+<div class="splash-layout">
+    <div class="card splash-card">
+        <span class="page-eyebrow">Campus Insight</span>
+    <div class="spinner"></div>
+        <h1>校园网用户行为分析与画像系统</h1>
+        <p>正在为你加载暖色化的新界面与最新分析数据，请稍候…</p>
+    </div>
+</div>
+<script src="js/ui.js"></script>
+<script>
+    window.location.href = 'dashboard.html';
+</script>
+</body>
+</html>

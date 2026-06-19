@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户画像 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">首页</a></li>
+        <li><a href="analysis.html">多维分析</a></li>
+        <li><a href="users.html">用户列表</a></li>
+        <li><a href="warning.html">预警管理</a></li>
+        <li><a href="profile.html" class="active">用户画像</a></li>
+        <li><a href="tasks.html">任务状态</a></li>
+        <li><a href="account.html">后台账号</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card dashboard-hero-card">
+        <div class="card-body dashboard-hero">
+            <div>
+                <div class="page-eyebrow">Cluster Intelligence Overview</div>
+                <h1>用户聚类画像总览</h1>
+                <p>展示五类用户群体的规模、平均健康度、预警覆盖率和簇内用户详情，帮助快速识别重点群体与典型用户。</p>
+            </div>
+            <div class="dashboard-hero-actions">
+                <a class="btn btn-primary" href="users.html">查看全部用户</a>
+                <a class="btn btn-info" href="warning.html">查看预警管理</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">群体分布</div>
+        <div class="card-body">
+            <div id="clusterDistributionChart" class="chart-panel"></div>
+            <div id="clusterOverviewCards" class="analysis-grid grid-3"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">群体切换与摘要</div>
+        <div class="card-body">
+            <div id="clusterActionButtons" class="task-card-actions cluster-switch-grid"></div>
+            <div id="clusterSummaryPanel" class="analysis-grid grid-4 mt-20">
+                <div class="metric-card info">
+                    <div class="metric-label">当前群体</div>
+                    <div class="metric-value" id="selectedClusterLabel">未选择</div>
+                    <div class="metric-trend" id="selectedClusterFocus">请先选择上方群体</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">群体规模</div>
+                    <div class="metric-value" id="selectedClusterCount">0</div>
+                    <div class="metric-trend" id="selectedClusterWarningRate">预警覆盖率 0%</div>
+                </div>
+                <div class="metric-card success">
+                    <div class="metric-label">平均健康度</div>
+                    <div class="metric-value" id="selectedClusterHealth">0</div>
+                    <div class="metric-trend" id="selectedClusterRisk">平均风险 0</div>
+                </div>
+                <div class="metric-card danger">
+                    <div class="metric-label">预警用户数</div>
+                    <div class="metric-value" id="selectedClusterWarnings">0</div>
+                    <div class="metric-trend" id="selectedClusterStudy">低健康用户 0 人 · 学习流量占比 0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="analysis-grid grid-2 mt-30">
+        <div class="card">
+            <div class="card-header">群体平均雷达图</div>
+            <div class="card-body">
+                <div id="clusterRadarChart" class="chart-panel chart-panel-small"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">群体风险来源</div>
+            <div class="card-body">
+                <div id="clusterRiskSources" class="compare-list-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">典型用户样本</div>
+        <div class="card-body">
+            <div id="clusterTypicalSamples" class="attention-list-grid"></div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">簇内用户详情</div>
+        <div class="card-body">
+            <div style="overflow-x:auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>学号姓名</th>
+                        <th>学院专业</th>
+                        <th>所在群体</th>
+                        <th>健康度</th>
+                        <th>风险分</th>
+                        <th>预警数</th>
+                        <th>状态</th>
+                        <th>群体摘要</th>
+                    </tr>
+                    </thead>
+                    <tbody id="clusterUsersTable">
+                    <tr><td colspan="8" class="table-empty-cell">请选择上方任一群体查看用户详情。</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-pager">
+                <button id="clusterUsersPrevButton" class="btn btn-primary btn-small" type="button" onclick="prevClusterUsersPage()">上一页</button>
+                <span id="clusterUsersPageInfo" class="table-pager-info">第 1 页 / 共 1 页，合计 0 条</span>
+                <button id="clusterUsersNextButton" class="btn btn-primary btn-small" type="button" onclick="nextClusterUsersPage()">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 校园网用户行为分析与画像系统 - 用户画像</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>

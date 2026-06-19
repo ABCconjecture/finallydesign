@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 校园网用户健康行为分析与画像系统</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body class="auth-page">
+<div class="auth-layout">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <h1>校园网用户健康行为分析与画像系统</h1>
+            <p>登录后可按角色访问系统功能。查看员仅保留只读权限，管理员可执行分析任务与预警处理。</p>
+        </div>
+        <div class="auth-card-body">
+            <div class="alert alert-danger hidden" id="loginError"></div>
+            <form id="loginForm">
+                <div class="mb-20">
+                    <label for="username" class="auth-label">用户名</label>
+                    <input id="username" name="username" type="text" autocomplete="username" placeholder="请输入用户名" required>
+                </div>
+                <div class="mb-20">
+                    <label for="password" class="auth-label">密码</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="loginButton">登录</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

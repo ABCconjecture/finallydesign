@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>åå°è´¦å· - æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç»</title>
+    <link rel="stylesheet" href="css/campus.css">
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+<div class="daohang">
+    <ul>
+        <li><a href="dashboard.html">é¦é¡µ</a></li>
+        <li><a href="analysis.html">å¤ç»´åæ</a></li>
+        <li><a href="users.html">ç¨æ·åè¡¨</a></li>
+        <li><a href="warning.html">é¢è­¦ç®¡ç</a></li>
+        <li><a href="profile.html">ç¨æ·ç»å</a></li>
+        <li><a href="tasks.html">ä»»å¡ç¶æ</a></li>
+        <li><a href="account.html" class="active">åå°è´¦å·</a></li>
+    </ul>
+</div>
+
+<div class="main-concent">
+    <div class="card">
+        <div class="card-header">åå°è´¦å·ç®¡ç</div>
+        <div class="card-body">
+            <div class="account-summary">
+                <div>
+                    <div class="metric-label">å½åç®¡çå</div>
+                    <div class="metric-value" id="currentAccountName">-</div>
+                    <div class="metric-trend" id="currentAccountMeta">-</div>
+                </div>
+                <div class="account-summary-note">
+                    <p>å»ºè®®æµç¨ï¼ååå»ºæ­£å¼ç®¡çåè´¦å·ï¼åç»å½æ°è´¦å·ï¼æååç¨åå§åç®¡çåã</p>
+                    <p>ç³»ç»åªæå¨æ²¡æä»»ä½è´¦å·æ¶æä¼åå»ºåå§åç®¡çåï¼åç»­éå¯ä¸ä¼èªå¨è¡¥åæ§é»è®¤è´¦å·ã</p>
+                    <p>è§è²åçº§ï¼ç®¡çåå¯è§¦ååæãå¤çé¢è­¦ä¸ç®¡çè´¦å·ï¼æ¥çåä»ä¿çåªè¯»è®¿é®æéã</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="account-grid mt-30">
+        <div class="card">
+            <div class="card-header">ä¿®æ¹å½åè´¦å·èµæ</div>
+            <div class="card-body">
+                <form id="profileForm">
+                    <div class="mb-20">
+                        <label class="account-label" for="profileUsername">ç¨æ·å</label>
+                        <input id="profileUsername" type="text" minlength="4" maxlength="32" required>
+                    </div>
+                    <div class="mb-20">
+                        <label class="account-label" for="profileDisplayName">æ¾ç¤ºåç§°</label>
+                        <input id="profileDisplayName" type="text" maxlength="32" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit">ä¿å­èµæ</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">ä¿®æ¹å½åå¯ç </div>
+            <div class="card-body">
+                <form id="passwordForm">
+                    <div class="mb-20">
+                        <label class="account-label" for="currentPassword">å½åå¯ç </label>
+                        <input id="currentPassword" type="password" autocomplete="current-password" required>
+                    </div>
+                    <div class="mb-20">
+                        <label class="account-label" for="newPassword">æ°å¯ç </label>
+                        <input id="newPassword" type="password" autocomplete="new-password" minlength="8" required>
+                    </div>
+                    <div class="mb-20">
+                        <label class="account-label" for="confirmPassword">ç¡®è®¤æ°å¯ç </label>
+                        <input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required>
+                    </div>
+                    <button class="btn btn-warning" type="submit">æ´æ°å¯ç </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">æ°å¢åå°è´¦å·</div>
+        <div class="card-body">
+            <form id="createUserForm" class="account-form-inline">
+                <div>
+                    <label class="account-label" for="newAccountUsername">ç¨æ·å</label>
+                    <input id="newAccountUsername" type="text" minlength="4" maxlength="32" required>
+                </div>
+                <div>
+                    <label class="account-label" for="newAccountDisplayName">æ¾ç¤ºåç§°</label>
+                    <input id="newAccountDisplayName" type="text" maxlength="32" required>
+                </div>
+                <div>
+                    <label class="account-label" for="newAccountRole">è§è²</label>
+                    <select id="newAccountRole" required>
+                        <option value="VIEWER">æ¥çå</option>
+                        <option value="ADMIN">ç®¡çå</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="account-label" for="newAccountPassword">åå§å¯ç </label>
+                    <input id="newAccountPassword" type="password" minlength="8" required>
+                </div>
+                <div class="account-form-action">
+                    <button class="btn btn-success" type="submit">åå»ºè´¦å·</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-30">
+        <div class="card-header">è´¦å·åè¡¨</div>
+        <div class="card-body">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ç¨æ·å</th>
+                        <th>æ¾ç¤ºåç§°</th>
+                        <th>è§è²</th>
+                        <th>ç¶æ</th>
+                        <th>æè¿ç»å½</th>
+                        <th>åå»ºæ¶é´</th>
+                        <th>æ´æ°æ¶é´</th>
+                        <th>æä½</th>
+                    </tr>
+                    </thead>
+                    <tbody id="accountUsersTable">
+                    <tr><td colspan="8" style="text-align: center; padding: 30px;"><div class="spinner"></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Â© 2026 æ ¡å­ç½ç¨æ·è¡ä¸ºåæç³»ç» - åå°è´¦å·ç®¡ç</p>
+</div>
+<script src="js/ui.js"></script>
+<script src="js/account.js"></script>
+</body>
+</html>
+
